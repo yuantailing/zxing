@@ -134,25 +134,17 @@ public final class Decoder {
 
     // Read codewords
     byte[] codewords = parser.readCodewords();
-    // Separate into data blocks
-    DataBlock[] dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
-
-    // Count total number of data bytes
-    int totalBytes = 0;
-    for (DataBlock dataBlock : dataBlocks) {
-      totalBytes += dataBlock.getNumDataCodewords();
-    }
-    byte[] resultBytes = new byte[totalBytes];
-    int resultOffset = 0;
 
     // Error-correct and copy data blocks together into a stream of bytes
-    for (DataBlock dataBlock : dataBlocks) {
-      byte[] codewordBytes = dataBlock.getCodewords();
-      int numDataCodewords = dataBlock.getNumDataCodewords();
-      correctErrors(codewordBytes, numDataCodewords);
-      for (int i = 0; i < numDataCodewords; i++) {
-        resultBytes[resultOffset++] = codewordBytes[i];
-      }
+    byte[] resultBytes = nativeCorrect(
+      version.getVersionNumber(),
+      ecLevel == ErrorCorrectionLevel.L ? 0 :
+        ecLevel == ErrorCorrectionLevel.M ? 1 :
+        ecLevel == ErrorCorrectionLevel.Q ? 2 : 3,
+      codewords
+    );
+    if (resultBytes.length == 0) {
+      throw ChecksumException.getChecksumInstance();
     }
 
     // Decode the contents of that stream of bytes
@@ -186,4 +178,8 @@ public final class Decoder {
     }
   }
 
+  public static native byte[] nativeCorrect(int version, int ecl, byte[] bytes);
+  static {
+    System.loadLibrary("qrdecoder");
+  }
 }
