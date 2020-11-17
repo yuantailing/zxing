@@ -33,6 +33,15 @@ import android.os.Message;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
+import android.graphics.Rect;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 final class DecodeHandler extends Handler {
 
   private final CaptureActivity activity;
@@ -76,6 +85,29 @@ final class DecodeHandler extends Handler {
       BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
       try {
         rawResult = multiFormatReader.decodeWithState(bitmap);
+
+        try {
+          FileWriter writer = new FileWriter("/sdcard/logs-qrdecoder/yuvdata_info.txt");
+          Rect rect = activity.getCameraManager().getFramingRectInPreview();
+          writer.write(
+            String.valueOf(width) + " " +
+            String.valueOf(height) + " " +
+            String.valueOf(rect.left) + " " +
+            String.valueOf(rect.top) + " " +
+            String.valueOf(rect.width()) + " " +
+            String.valueOf(rect.height()) + "\n"
+          );
+          SimpleDateFormat sdf = new SimpleDateFormat();
+          sdf.applyPattern("yyyy-MM-dd HH:mm:ss a");
+          Date date = new Date();
+          writer.write(sdf.format(date) + "\n");
+          writer.close();
+          OutputStream os = new FileOutputStream(new File("/sdcard/logs-qrdecoder/yuvdata.bin"));
+          os.write(data);
+          os.close();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       } catch (ReaderException re) {
         // continue
       } finally {
