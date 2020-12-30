@@ -41,6 +41,15 @@
         android:defaultValue="false"
         android:title="@string/preferences_decode_PDF417_title"/>
   </PreferenceCategory>
+  <PreferenceCategory android:title="@string/preferences_rsdecode_title">
+    <ListPreference
+        android:entries="@array/preferences_rsdecode_algorithm_options"
+        android:entryValues="@array/preferences_rsdecode_algorithm_values"
+        android:key="preferences_rsdecode_algorithm"
+        android:defaultValue="f0"
+        android:title="@string/preferences_rsdecode_algorithm_title"
+        android:summary="%s"/>
+  </PreferenceCategory>
   <PreferenceCategory android:title="@string/preferences_actions_title">
     <CheckBoxPreference
         android:key="preferences_play_beep"

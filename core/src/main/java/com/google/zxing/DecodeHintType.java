@@ -98,6 +98,8 @@ public enum DecodeHintType {
    */
   ALLOWED_EAN_EXTENSIONS(int[].class),
 
+  RSDECODE_ALGORITHM(String.class),
+
   // End of enumeration values.
   ;
 

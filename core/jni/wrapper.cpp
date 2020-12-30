@@ -16,7 +16,7 @@ static inline size_t _b2i(string const& s) {
 
 extern "C"
 JNIEXPORT jbyteArray JNICALL
-Java_com_google_zxing_qrcode_decoder_Decoder_nativeCorrect( JNIEnv* env, jobject job, jint version, jint ecl, jbyteArray array )
+Java_com_google_zxing_qrcode_decoder_Decoder_nativeCorrect( JNIEnv* env, jobject job, jint version, jint ecl, jint f_thresh, jboolean try_byte_mode, jbyteArray array )
 {
     int8_t *ptr = env->GetByteArrayElements(array, NULL);
     size_t length = env->GetArrayLength(array);
@@ -27,7 +27,7 @@ Java_com_google_zxing_qrcode_decoder_Decoder_nativeCorrect( JNIEnv* env, jobject
 
     string code;
     try {
-        code = qr_codewords_to_code((size_t)version, (size_t)ecl, codewords, { 3, true });
+        code = qr_codewords_to_code((size_t)version, (size_t)ecl, codewords, { (size_t)f_thresh, (bool)try_byte_mode });
     } catch (QrCannotDecodeError const &e) { }
 
     vector<int8_t> code_bytes;

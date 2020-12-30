@@ -135,16 +135,52 @@ public final class Decoder {
     // Read codewords
     byte[] codewords = parser.readCodewords();
 
-    // Error-correct and copy data blocks together into a stream of bytes
-    byte[] resultBytes = nativeCorrect(
-      version.getVersionNumber(),
-      ecLevel == ErrorCorrectionLevel.L ? 0 :
-        ecLevel == ErrorCorrectionLevel.M ? 1 :
-        ecLevel == ErrorCorrectionLevel.Q ? 2 : 3,
-      codewords
-    );
-    if (resultBytes.length == 0) {
-      throw ChecksumException.getChecksumInstance();
+    String rsdecode_algorithm = hints.get(DecodeHintType.RSDECODE_ALGORITHM).toString();
+    int f_thresh = 0;
+    boolean try_byte_mode = false;
+    if ("f3".equals(rsdecode_algorithm)) {
+      f_thresh = 3;
+    } else if ("bm".equals(rsdecode_algorithm)) {
+      f_thresh = 3;
+      try_byte_mode = true;
+    }
+
+    byte[] resultBytes;
+    if (f_thresh == 0 && !try_byte_mode) {
+      // Separate into data blocks
+      DataBlock[] dataBlocks = DataBlock.getDataBlocks(codewords, version, ecLevel);
+
+      // Count total number of data bytes
+      int totalBytes = 0;
+      for (DataBlock dataBlock : dataBlocks) {
+        totalBytes += dataBlock.getNumDataCodewords();
+      }
+      resultBytes = new byte[totalBytes];
+      int resultOffset = 0;
+
+      // Error-correct and copy data blocks together into a stream of bytes
+      for (DataBlock dataBlock : dataBlocks) {
+        byte[] codewordBytes = dataBlock.getCodewords();
+        int numDataCodewords = dataBlock.getNumDataCodewords();
+        correctErrors(codewordBytes, numDataCodewords);
+        for (int i = 0; i < numDataCodewords; i++) {
+          resultBytes[resultOffset++] = codewordBytes[i];
+        }
+      }
+    } else {
+      // Error-correct and copy data blocks together into a stream of bytes
+      resultBytes = nativeCorrect(
+        version.getVersionNumber(),
+        ecLevel == ErrorCorrectionLevel.L ? 0 :
+          ecLevel == ErrorCorrectionLevel.M ? 1 :
+          ecLevel == ErrorCorrectionLevel.Q ? 2 : 3,
+        f_thresh,
+        try_byte_mode,
+        codewords
+      );
+      if (resultBytes.length == 0) {
+        throw ChecksumException.getChecksumInstance();
+      }
     }
 
     // Decode the contents of that stream of bytes
@@ -178,7 +214,7 @@ public final class Decoder {
     }
   }
 
-  public static native byte[] nativeCorrect(int version, int ecl, byte[] bytes);
+  public static native byte[] nativeCorrect(int version, int ecl, int f_thresh, boolean try_byte_mode, byte[] bytes);
   static {
     System.loadLibrary("qrdecoder");
   }
