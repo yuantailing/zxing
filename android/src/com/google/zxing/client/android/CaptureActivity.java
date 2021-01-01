@@ -141,6 +141,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     ambientLightManager = new AmbientLightManager(this);
 
     PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+    forcePreferences();
   }
 
   @Override
@@ -171,7 +172,7 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
     if (prefs.getBoolean(PreferencesActivity.KEY_DISABLE_AUTO_ORIENTATION, true)) {
       setRequestedOrientation(getCurrentOrientation());
     } else {
-      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
+      setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     resetStatusView();
@@ -764,5 +765,17 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
   public void drawViewfinder() {
     viewfinderView.drawViewfinder();
+  }
+
+  private void forcePreferences() {
+    PreferenceManager.getDefaultSharedPreferences(this).edit()
+      .putBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, false)
+      .putBoolean(PreferencesActivity.KEY_DECODE_1D_INDUSTRIAL, false)
+      .putBoolean(PreferencesActivity.KEY_DECODE_QR, true)
+      .putBoolean(PreferencesActivity.KEY_DECODE_DATA_MATRIX, false)
+      .putBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)
+      .putBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)
+      .putBoolean(PreferencesActivity.KEY_DISABLE_AUTO_ORIENTATION, false)
+      .commit();
   }
 }

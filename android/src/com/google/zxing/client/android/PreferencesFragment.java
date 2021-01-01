@@ -55,7 +55,6 @@ public final class PreferencesFragment
                                     PreferencesActivity.KEY_DECODE_DATA_MATRIX,
                                     PreferencesActivity.KEY_DECODE_AZTEC,
                                     PreferencesActivity.KEY_DECODE_PDF417);
-    disableLastCheckedPref();
 
     EditTextPreference customProductSearch = (EditTextPreference)
         preferences.findPreference(PreferencesActivity.KEY_CUSTOM_PRODUCT_SEARCH);
@@ -72,7 +71,6 @@ public final class PreferencesFragment
   
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-    disableLastCheckedPref();
   }
 
   private void disableLastCheckedPref() {
