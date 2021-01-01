@@ -58,7 +58,6 @@ public final class PreferencesFragment
                                     PreferencesActivity.KEY_DECODE_DATA_MATRIX,
                                     PreferencesActivity.KEY_DECODE_AZTEC,
                                     PreferencesActivity.KEY_DECODE_PDF417);
-    disableLastCheckedPref();
 
     rsdecodeAlgorithmPref = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_ALGORITHM);
     rsdecodeThreadsPref = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_THREADS);
@@ -79,7 +78,6 @@ public final class PreferencesFragment
   
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-    disableLastCheckedPref();
     disableRsdecodeThreadsPref();
   }
 

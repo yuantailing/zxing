@@ -18,27 +18,33 @@
   <PreferenceCategory android:title="@string/preferences_scanning_title">
     <CheckBoxPreference
         android:key="preferences_decode_1D_product"
-        android:defaultValue="true"
+        android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_decode_1D_product_title"/>
     <CheckBoxPreference
         android:key="preferences_decode_1D_industrial"
-        android:defaultValue="true"
+        android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_decode_1D_industrial_title"/>
     <CheckBoxPreference
         android:key="preferences_decode_QR"
         android:defaultValue="true"
+        android:enabled="false"
         android:title="@string/preferences_decode_QR_title"/>
     <CheckBoxPreference
         android:key="preferences_decode_Data_Matrix"
-        android:defaultValue="true"
+        android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_decode_Data_Matrix_title"/>
     <CheckBoxPreference
         android:key="preferences_decode_Aztec"
         android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_decode_Aztec_title"/>
     <CheckBoxPreference
         android:key="preferences_decode_PDF417"
         android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_decode_PDF417_title"/>
   </PreferenceCategory>
   <PreferenceCategory android:title="@string/preferences_rsdecode_title">
@@ -46,7 +52,7 @@
         android:entries="@array/preferences_rsdecode_algorithm_options"
         android:entryValues="@array/preferences_rsdecode_algorithm_values"
         android:key="preferences_rsdecode_algorithm"
-        android:defaultValue="f0"
+        android:defaultValue="bm"
         android:title="@string/preferences_rsdecode_algorithm_title"
         android:summary="%s"/>
     <ListPreference
@@ -114,7 +120,8 @@
         android:summary="@string/preferences_bulk_mode_summary"/>
     <CheckBoxPreference
         android:key="preferences_orientation"
-        android:defaultValue="true"
+        android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_orientation_title"/>
   </PreferenceCategory>
   <PreferenceCategory android:title="@string/preferences_result_title">
