@@ -100,6 +100,8 @@ public enum DecodeHintType {
 
   RSDECODE_ALGORITHM(String.class),
 
+  RSDECODE_THREADS(int.class),
+
   // End of enumeration values.
   ;
 

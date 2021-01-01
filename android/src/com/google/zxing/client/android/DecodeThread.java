@@ -89,8 +89,11 @@ final class DecodeThread extends Thread {
       hints.put(DecodeHintType.CHARACTER_SET, characterSet);
     }
 
-    String rsdecode_algorithm = prefs.getString("preferences_rsdecode_algorithm", "f0");
+    String rsdecode_algorithm = prefs.getString(PreferencesActivity.KEY_RSCODE_ALGORITHM, "f0");
     hints.put(DecodeHintType.RSDECODE_ALGORITHM, rsdecode_algorithm);
+
+    int rsdecode_threads = Integer.parseInt(prefs.getString(PreferencesActivity.KEY_RSCODE_THREADS, "1"));
+    hints.put(DecodeHintType.RSDECODE_THREADS, rsdecode_threads);
 
     hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
   }

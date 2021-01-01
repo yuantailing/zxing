@@ -168,6 +168,7 @@ public final class Decoder {
         }
       }
     } else {
+      int num_threads = 1;
       // Error-correct and copy data blocks together into a stream of bytes
       resultBytes = nativeCorrect(
         version.getVersionNumber(),
@@ -176,6 +177,7 @@ public final class Decoder {
           ecLevel == ErrorCorrectionLevel.Q ? 2 : 3,
         f_thresh,
         try_byte_mode,
+        num_threads,
         codewords
       );
       if (resultBytes.length == 0) {
@@ -214,7 +216,7 @@ public final class Decoder {
     }
   }
 
-  public static native byte[] nativeCorrect(int version, int ecl, int f_thresh, boolean try_byte_mode, byte[] bytes);
+  public static native byte[] nativeCorrect(int version, int ecl, int f_thresh, boolean try_byte_mode, int num_threads, byte[] bytes);
   static {
     System.loadLibrary("qrdecoder");
   }

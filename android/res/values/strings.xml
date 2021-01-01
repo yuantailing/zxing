@@ -126,6 +126,10 @@
   <string name="preferences_rsdecode_algorithm_f0">Traditional decoding</string>
   <string name="preferences_rsdecode_algorithm_f3">List decoding</string>
   <string name="preferences_rsdecode_algorithm_title">RS decoding algorithm</string>
+  <string name="preferences_rsdecode_threads_1">1 thread</string>
+  <string name="preferences_rsdecode_threads_2">2 threads</string>
+  <string name="preferences_rsdecode_threads_4">4 threads</string>
+  <string name="preferences_rsdecode_threads_title">#List decoding threads</string>
   <string name="preferences_rsdecode_title">RS decoding settings</string>
   <string name="preferences_scanning_title">When scanning for barcodes, decode\u2026</string>
   <string name="preferences_search_country">Search country</string>

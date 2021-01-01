@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
@@ -40,6 +41,8 @@ public final class PreferencesFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 
   private CheckBoxPreference[] checkBoxPrefs;
+  private ListPreference rsdecodeAlgorithmPrefs;
+  private ListPreference rsdecodeThreadsPrefs;
   
   @Override
   public void onCreate(Bundle icicle) {
@@ -57,6 +60,10 @@ public final class PreferencesFragment
                                     PreferencesActivity.KEY_DECODE_PDF417);
     disableLastCheckedPref();
 
+    rsdecodeAlgorithmPrefs = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_ALGORITHM);
+    rsdecodeThreadsPrefs = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_THREADS);
+    rsdecodeThreadsPrefs.setEnabled(!"f0".equals(rsdecodeAlgorithmPrefs.getValue()));
+
     EditTextPreference customProductSearch = (EditTextPreference)
         preferences.findPreference(PreferencesActivity.KEY_CUSTOM_PRODUCT_SEARCH);
     customProductSearch.setOnPreferenceChangeListener(new CustomSearchURLValidator());
@@ -73,6 +80,7 @@ public final class PreferencesFragment
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     disableLastCheckedPref();
+    rsdecodeThreadsPrefs.setEnabled(!"f0".equals(rsdecodeAlgorithmPrefs.getValue()));
   }
 
   private void disableLastCheckedPref() {

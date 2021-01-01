@@ -49,6 +49,13 @@
         android:defaultValue="f0"
         android:title="@string/preferences_rsdecode_algorithm_title"
         android:summary="%s"/>
+    <ListPreference
+        android:entries="@array/preferences_rsdecode_threads_options"
+        android:entryValues="@array/preferences_rsdecode_threads_values"
+        android:key="preferences_rsdecode_threads"
+        android:defaultValue="1"
+        android:title="@string/preferences_rsdecode_threads_title"
+        android:summary="%s"/>
   </PreferenceCategory>
   <PreferenceCategory android:title="@string/preferences_actions_title">
     <CheckBoxPreference

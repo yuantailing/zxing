@@ -59,6 +59,16 @@
     <item>@string/preferences_rsdecode_algorithm_f3</item>
     <item>@string/preferences_rsdecode_algorithm_bm</item>
   </string-array>
+  <string-array name="preferences_rsdecode_threads_values" tools:ignore="MissingTranslation">
+    <item>1</item>
+    <item>2</item>
+    <item>4</item>
+  </string-array>
+  <string-array name="preferences_rsdecode_threads_options">
+    <item>@string/preferences_rsdecode_threads_1</item>
+    <item>@string/preferences_rsdecode_threads_2</item>
+    <item>@string/preferences_rsdecode_threads_4</item>
+  </string-array>
   <string-array name="preferences_front_light_values" tools:ignore="MissingTranslation">
     <item>ON</item>
     <item>AUTO</item>
