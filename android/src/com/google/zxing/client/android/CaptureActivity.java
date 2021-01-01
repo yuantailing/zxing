@@ -34,6 +34,7 @@ import com.google.zxing.client.android.share.ShareActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -262,6 +263,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       // Install the callback and wait for surfaceCreated() to init the camera.
       surfaceHolder.addCallback(this);
     }
+
+    updateRsdecodeAlgorithmTitle();
   }
 
   private int getCurrentOrientation() {
@@ -359,10 +362,31 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
   }
 
   @Override
+  public boolean onPrepareOptionsMenu(Menu menu) {
+    MenuItem item = menu.findItem(R.id.menu_rsdecode_algorithm);
+    item.setTitle(currentRsdecodeAlgorithmTitle());
+    return super.onPrepareOptionsMenu(menu);
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.addFlags(Intents.FLAG_NEW_DOC);
     switch (item.getItemId()) {
+      case R.id.menu_rsdecode_algorithm:
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        Activity activity = this;
+        builder.setTitle(R.string.preferences_rsdecode_algorithm_title)
+               .setItems(R.array.preferences_rsdecode_algorithm_options, new DialogInterface.OnClickListener() {
+                 public void onClick(DialogInterface dialog, int which) {
+                   SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+                   String[] values = getResources().getStringArray(R.array.preferences_rsdecode_algorithm_values);
+                   prefs.edit().putString(PreferencesActivity.KEY_RSCODE_ALGORITHM, values[which]).commit();
+                   updateRsdecodeAlgorithmTitle();
+                 }
+               });
+        builder.show();
+        break;
       case R.id.menu_share:
         intent.setClassName(this, ShareActivity.class.getName());
         startActivity(intent);
@@ -764,5 +788,25 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
 
   public void drawViewfinder() {
     viewfinderView.drawViewfinder();
+  }
+
+  private String currentRsdecodeAlgorithmTitle() {
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    String value = prefs.getString(PreferencesActivity.KEY_RSCODE_ALGORITHM, "f0");
+    String[] values = getResources().getStringArray(R.array.preferences_rsdecode_algorithm_values);
+    String[] short_options = getResources().getStringArray(R.array.menu_rsdecode_algorithm_titles);
+    for (int i = 0; i < Math.min(values.length, short_options.length); i++) {
+      if (value.equals(values[i])) {
+        return short_options[i];
+      }
+    }
+    return getResources().getString(R.string.menu_rsdecode_algorithm_unknown);
+  }
+
+  private void updateRsdecodeAlgorithmTitle() {
+    TextView view = (TextView) findViewById(R.id.menu_rsdecode_algorithm);
+    if (view != null) {
+      view.setText(currentRsdecodeAlgorithmTitle());
+    }
   }
 }

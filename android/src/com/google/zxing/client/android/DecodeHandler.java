@@ -16,7 +16,9 @@
 
 package com.google.zxing.client.android;
 
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -37,12 +39,14 @@ final class DecodeHandler extends Handler {
 
   private final CaptureActivity activity;
   private final MultiFormatReader multiFormatReader;
+  private Map<DecodeHintType,Object> hints;
   private boolean running = true;
 
   DecodeHandler(CaptureActivity activity, Map<DecodeHintType,Object> hints) {
     multiFormatReader = new MultiFormatReader();
     multiFormatReader.setHints(hints);
     this.activity = activity;
+    this.hints = hints;
   }
 
   @Override
@@ -52,6 +56,12 @@ final class DecodeHandler extends Handler {
     }
     switch (message.what) {
       case R.id.decode:
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        String rsdecode_algorithm = prefs.getString(PreferencesActivity.KEY_RSCODE_ALGORITHM, "f0");
+        int rsdecode_threads = Integer.parseInt(prefs.getString(PreferencesActivity.KEY_RSCODE_THREADS, "1"));
+        hints.put(DecodeHintType.RSDECODE_ALGORITHM, rsdecode_algorithm);
+        hints.put(DecodeHintType.RSDECODE_THREADS, rsdecode_threads);
+        multiFormatReader.setHints(hints);
         decode((byte[]) message.obj, message.arg1, message.arg2);
         break;
       case R.id.quit:

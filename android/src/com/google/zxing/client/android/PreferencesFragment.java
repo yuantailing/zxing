@@ -41,8 +41,8 @@ public final class PreferencesFragment
     implements SharedPreferences.OnSharedPreferenceChangeListener {
 
   private CheckBoxPreference[] checkBoxPrefs;
-  private ListPreference rsdecodeAlgorithmPrefs;
-  private ListPreference rsdecodeThreadsPrefs;
+  private ListPreference rsdecodeAlgorithmPref;
+  private ListPreference rsdecodeThreadsPref;
   
   @Override
   public void onCreate(Bundle icicle) {
@@ -60,9 +60,9 @@ public final class PreferencesFragment
                                     PreferencesActivity.KEY_DECODE_PDF417);
     disableLastCheckedPref();
 
-    rsdecodeAlgorithmPrefs = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_ALGORITHM);
-    rsdecodeThreadsPrefs = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_THREADS);
-    rsdecodeThreadsPrefs.setEnabled(!"f0".equals(rsdecodeAlgorithmPrefs.getValue()));
+    rsdecodeAlgorithmPref = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_ALGORITHM);
+    rsdecodeThreadsPref = (ListPreference) preferences.findPreference(PreferencesActivity.KEY_RSCODE_THREADS);
+    disableRsdecodeThreadsPref();
 
     EditTextPreference customProductSearch = (EditTextPreference)
         preferences.findPreference(PreferencesActivity.KEY_CUSTOM_PRODUCT_SEARCH);
@@ -80,7 +80,7 @@ public final class PreferencesFragment
   @Override
   public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
     disableLastCheckedPref();
-    rsdecodeThreadsPrefs.setEnabled(!"f0".equals(rsdecodeAlgorithmPrefs.getValue()));
+    disableRsdecodeThreadsPref();
   }
 
   private void disableLastCheckedPref() {
@@ -94,6 +94,10 @@ public final class PreferencesFragment
     for (CheckBoxPreference pref : checkBoxPrefs) {
       pref.setEnabled(!(disable && checked.contains(pref)));
     }
+  }
+
+  private void disableRsdecodeThreadsPref() {
+    rsdecodeThreadsPref.setEnabled(!"f0".equals(rsdecodeAlgorithmPref.getValue()));
   }
 
   private final class CustomSearchURLValidator implements Preference.OnPreferenceChangeListener {

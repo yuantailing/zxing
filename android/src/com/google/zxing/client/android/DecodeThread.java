@@ -61,8 +61,8 @@ final class DecodeThread extends Thread {
     }
 
     // The prefs can't change while the thread is running, so pick them up once here.
-    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
     if (decodeFormats == null || decodeFormats.isEmpty()) {
+      SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
       decodeFormats = EnumSet.noneOf(BarcodeFormat.class);
       if (prefs.getBoolean(PreferencesActivity.KEY_DECODE_1D_PRODUCT, true)) {
         decodeFormats.addAll(DecodeFormatManager.PRODUCT_FORMATS);
@@ -88,13 +88,6 @@ final class DecodeThread extends Thread {
     if (characterSet != null) {
       hints.put(DecodeHintType.CHARACTER_SET, characterSet);
     }
-
-    String rsdecode_algorithm = prefs.getString(PreferencesActivity.KEY_RSCODE_ALGORITHM, "f0");
-    hints.put(DecodeHintType.RSDECODE_ALGORITHM, rsdecode_algorithm);
-
-    int rsdecode_threads = Integer.parseInt(prefs.getString(PreferencesActivity.KEY_RSCODE_THREADS, "1"));
-    hints.put(DecodeHintType.RSDECODE_THREADS, rsdecode_threads);
-
     hints.put(DecodeHintType.NEED_RESULT_POINT_CALLBACK, resultPointCallback);
   }
 

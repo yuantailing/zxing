@@ -59,6 +59,11 @@
     <item>@string/preferences_rsdecode_algorithm_f3</item>
     <item>@string/preferences_rsdecode_algorithm_bm</item>
   </string-array>
+  <string-array name="menu_rsdecode_algorithm_titles">
+    <item>@string/menu_rsdecode_algorithm_f0</item>
+    <item>@string/menu_rsdecode_algorithm_f3</item>
+    <item>@string/menu_rsdecode_algorithm_bm</item>
+  </string-array>
   <string-array name="preferences_rsdecode_threads_values" tools:ignore="MissingTranslation">
     <item>1</item>
     <item>2</item>
