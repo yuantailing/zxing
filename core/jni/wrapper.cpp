@@ -27,8 +27,8 @@ Java_com_google_zxing_qrcode_decoder_Decoder_nativeCorrect( JNIEnv* env, jobject
 
     string code;
     try {
-        code = qr_codewords_to_code((size_t)version, (size_t)ecl, codewords, { 3, true });
-    } catch (QrCannotDecodeError const &e) { }
+        code = qr_codewords_to_code((size_t)version, (size_t)ecl, codewords, { 3, true, 4 });
+    } catch (...) { }
 
     vector<int8_t> code_bytes;
     for (size_t i = 0; i + 8 <= code.length(); i += 8)
