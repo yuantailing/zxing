@@ -76,7 +76,8 @@
         android:summary="@string/preferences_history_summary"/>
     <CheckBoxPreference
         android:key="preferences_supplemental"
-        android:defaultValue="true"
+        android:defaultValue="false"
+        android:enabled="false"
         android:title="@string/preferences_supplemental_title"
         android:summary="@string/preferences_supplemental_summary"/>
   </PreferenceCategory>

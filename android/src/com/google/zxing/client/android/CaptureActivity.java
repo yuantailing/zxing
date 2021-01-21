@@ -776,6 +776,8 @@ public final class CaptureActivity extends Activity implements SurfaceHolder.Cal
       .putBoolean(PreferencesActivity.KEY_DECODE_AZTEC, false)
       .putBoolean(PreferencesActivity.KEY_DECODE_PDF417, false)
       .putBoolean(PreferencesActivity.KEY_DISABLE_AUTO_ORIENTATION, false)
+      .putBoolean(PreferencesActivity.KEY_SUPPLEMENTAL, false)
+      .putBoolean(PreferencesActivity.KEY_DISABLE_AUTO_ORIENTATION, false)
       .commit();
   }
 }
